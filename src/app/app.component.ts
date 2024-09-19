@@ -113,7 +113,7 @@ export class AppComponent implements OnInit {
   filteredOptions: { id: number, name: string }[] = [];
   isLoading = false;
   currentPage = 1;
-  perPage = 10;
+  perPage = 20;
 
   @ViewChild(CdkVirtualScrollViewport) virtualScroll: CdkVirtualScrollViewport | undefined;
 
@@ -142,6 +142,11 @@ export class AppComponent implements OnInit {
     if (this.isLoading) return of(this.filteredOptions); // Prevent multiple calls if already loading
 
     this.isLoading = true;
+
+    if(searchTerm){
+      this.filteredOptions = []
+      this.currentPage = 1
+    }
     return this.dataService.getNames(searchTerm, this.currentPage, this.perPage).pipe(
       map(data => {
         if (this.currentPage === 1) {
