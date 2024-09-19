@@ -1,0 +1,11 @@
+.virtual-scroll {
+    height: 200px; 
+    overflow: auto; /* Ensure scrolling is enabled */
+  }
+  
+  mat-autocomplete {
+    max-height: 200px; 
+    overflow-y: auto; /* Allow scrolling */
+  }
+  
+  
