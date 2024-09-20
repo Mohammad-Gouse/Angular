@@ -85,15 +85,60 @@
 
 
 
-<form [formGroup]="formGroup">
+<!-- <form [formGroup]="formGroup">
   <mat-form-field>
-    <input matInput formControlName="employee" [matAutocomplete]="auto" placeholder="Select an option">
+    <input matInput formControlName="employee" [matAutocomplete]="auto" placeholder="Select an option" (focus)="onDropdownOpened()">
+
     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onOptionSelected($event)">
-      <cdk-virtual-scroll-viewport itemSize="48" class="virtual-scroll" (scrolledIndexChange)="onScrollEnd()">
+      <cdk-virtual-scroll-viewport itemSize="10" class="virtual-scroll" (scrolledIndexChange)="onScrollEnd()">
         <mat-option *cdkVirtualFor="let option of filteredOptions" [value]="option">
           {{ option.name }}
         </mat-option>
+        <mat-option [disabled]="true" *ngIf="filteredOptions.length == 0">No Data Available</mat-option>
       </cdk-virtual-scroll-viewport>
     </mat-autocomplete>
   </mat-form-field>
+</form> -->
+
+
+
+
+
+
+
+
+
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+<mat-form-field appearance="fill">
+  <mat-label>Choose an employee</mat-label>
+  <input type="text" matInput formControlName="employee" [matAutocomplete]="auto" (focus)="onDropOpened()">
+  
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (opened)="onDropOpened()" (optionSelected)="onOptionSelected($event)">
+    
+    <div (scroll)="onScroll($event)" style="max-height: 200px; overflow-y: auto;">
+      <mat-option [disabled]="true" *ngIf="options.length === 0">
+        No data
+      </mat-option>
+      <mat-option *ngFor="let option of options" [value]="option">
+        {{ option.name }}
+      </mat-option>
+    </div>
+
+  </mat-autocomplete>
+</mat-form-field>
+
+<div *ngIf="isFieldInvalid('employee')" class="error">
+  <ng-container *ngIf="formGroup.get('employee')?.hasError('required')">
+    employee selection is required.
+  </ng-container>
+  <ng-container *ngIf="formGroup.get('employee')?.hasError('invalidEmployee')">
+    Please select a valid person from the list.
+  </ng-container>
+</div>
+
+<div>
+  <button type="submit" [disabled]="formGroup.invalid">Submit</button>
+</div>
 </form>
+
+
