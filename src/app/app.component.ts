@@ -277,8 +277,7 @@ export class AppComponent implements OnInit {
 
     // Validator for person autocomplete (must select from predefined list)
     employeeValidator(control: AbstractControl): ValidationErrors | null {
-    const selectedEmployee = true;
-    console.log(typeof(this.searchTerm))
+    const selectedEmployee = this.options.find(fsn => fsn.name === control.value?.name);;
     if (selectedEmployee) {
       return null;  // valid
     }
@@ -304,7 +303,7 @@ export class AppComponent implements OnInit {
 
   // Handle option selection
   onOptionSelected(event: any) {
-    console.log('Selected option:', event.option.value);
+    console.log('Selected option:', typeof event.option.value);
   }
 
     displayFn(option: { id: number, name: string }): string {
