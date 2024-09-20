@@ -267,7 +267,12 @@ export class AppComponent implements OnInit {
       this.isLoading = true;
       this.dataService.getNames(this.searchTerm, this.page, this.perPage).subscribe(data => {
         if (data.length > 0) {
-          this.options = [...this.options, ...data];  // Append new data to the existing list
+
+          const filteredData = data.map(item => ({
+            id: item.id,
+            name: item.name
+          }));
+          this.options = [...this.options, ...filteredData];  // Append new data to the existing list
           this.page++;  // Increase the page number for the next batch
         }
         this.isLoading = false;
@@ -303,7 +308,6 @@ export class AppComponent implements OnInit {
 
   // Handle option selection
   onOptionSelected(event: any) {
-    console.log('Selected option:', typeof event.option.value);
   }
 
     displayFn(option: { id: number, name: string }): string {
